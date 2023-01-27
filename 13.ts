@@ -8,14 +8,6 @@ const map = new Map([
     ['M', 1000],
 ]);
 
-function shouldSubstract(currentLetter: string, nextLetter: string): boolean {
-    return (
-        currentLetter === 'I' && (nextLetter === 'V' || nextLetter === 'X') ||
-        currentLetter === 'X' && (nextLetter === 'L' || nextLetter === 'C') ||
-        currentLetter === 'C' && (nextLetter === 'D' || nextLetter === 'M')
-    );
-}
-
 function romanToInt(s: string): number {
     let result: number = 0;
     for (let i = 0; i < s.length; i++) {
@@ -30,4 +22,12 @@ function romanToInt(s: string): number {
     }
 
     return result
+}
+
+function shouldSubstract(currentLetter: string, nextLetter: string): boolean {
+    return (
+        currentLetter === 'I' && (nextLetter === 'V' || nextLetter === 'X') ||
+        currentLetter === 'X' && (nextLetter === 'L' || nextLetter === 'C') ||
+        currentLetter === 'C' && (nextLetter === 'D' || nextLetter === 'M')
+    );
 }
