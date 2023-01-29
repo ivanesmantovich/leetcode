@@ -1,3 +1,5 @@
+// Fizz Buzz
+
 function fizzBuzz(n: number): string[] {
     let result: string[] = [];
     for (let currentNumber = 1; currentNumber <= n; currentNumber++) {
