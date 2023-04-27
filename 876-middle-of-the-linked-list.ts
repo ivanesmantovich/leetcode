@@ -1,4 +1,4 @@
-// Middle of the Linked List
+// Middle of the Linked List (https://leetcode.com/problems/middle-of-the-linked-list/)
 
 import { ListNode } from './classes/ListNode'
 
@@ -11,19 +11,19 @@ import { ListNode } from './classes/ListNode'
 //         numberOfNodes++;
 //         head = head.next;
 //     }
-    
+
 //     return nodes[Math.floor(numberOfNodes / 2)];
 // }
 
 // Slow and Fast Pointer solution
 function middleNode(head: ListNode | null): ListNode | null {
-    let slow: ListNode | null = head;
-    let fast: ListNode | null = head;
+    let slow: ListNode | null = head
+    let fast: ListNode | null = head
 
     while (slow && fast && fast.next) {
-        slow = slow.next;
-        fast = fast.next?.next;
+        slow = slow.next
+        fast = fast.next?.next
     }
-    
-    return slow;
+
+    return slow
 }

@@ -1,22 +1,22 @@
-// Fizz Buzz
+// Fizz Buzz (https://leetcode.com/problems/fizz-buzz/)
 
 function fizzBuzz(n: number): string[] {
-    let result: string[] = [];
+    let result: string[] = []
     for (let currentNumber = 1; currentNumber <= n; currentNumber++) {
-        result.push(getFizzBuzzValue(currentNumber));
+        result.push(getFizzBuzzValue(currentNumber))
     }
-    return result;
+    return result
 }
 
 function getFizzBuzzValue(num: number): string {
     if (num % 3 === 0 && num % 5 === 0) {
-        return 'FizzBuzz';
+        return 'FizzBuzz'
     }
     if (num % 3 === 0) {
-        return 'Fizz';
+        return 'Fizz'
     }
     if (num % 5 === 0) {
-        return 'Buzz';
+        return 'Buzz'
     }
-    return num.toString();
+    return num.toString()
 }
