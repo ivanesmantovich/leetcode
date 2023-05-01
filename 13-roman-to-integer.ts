@@ -11,7 +11,7 @@ const map = new Map([
 ])
 
 function romanToInt(s: string): number {
-    let result: number = 0
+    let result = 0
     for (let i = 0; i < s.length; i++) {
         const currentletter: string = s[i]
         const nextLetter: string = s[i + 1]
