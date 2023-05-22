@@ -7,22 +7,28 @@
 
 
 Полный алгоритм:
-1. Инит мап со значениями-обьектами { originalCount: number; currentCount: number}, lettersToCheck = s1.length
+1. Инит
+   мап со значениями-обьектами { originalCount: number; currentCount: number},
+   lettersToCheck = s1.length
 2. Цикл по s1, считаем буквы
 3. Слайдинг виндоу, left = 0, for (right)
-4. Если буква есть в мапе, но она закончилась (currentCount = 0), пока ее currentCount = 0 двигаем left и если буква по left есть в мапе, ее currentCount++ и lettersLeft++
-5. Иначе если буква есть в мапе, ее currentCount-- и lettersLeft--. Если lettersLeft = 0, return true
-6. Иначе (буквы нет в мапе) сбрасываем мап (все currentCount = originalCount), lettersLeft = lettersToCheck и двигаем right до тех пор пока right + 1 не будет в мапе. left = right
-7. Если дошли до конца, return false
+    4. Если буква есть в мапе
+        5. Проверяем закончилась ли s2[right], если да, то while ее currentCount = 0:
+            двигаем left и если буква s2[left] есть в мапе, то s2[left].currentCount++ и lettersLeft++
+        6. После этого s2[right].currentCount--, lettersLeft--. Если lettersLeft = 0, return true
+    7. Иначе (буквы нет в мапе):
+        Cбрасываем мап (все currentCount = originalCount),
+        lettersLeft = lettersToCheck,
+        while right + 1 нет в мапе двигаем right,
+        left = right
+8. Если дошли до конца, return false
 */
 
 function checkInclusion(s1: string, s2: string): boolean {
     const mapFirstWord = new Map<
         string,
         { originalCount: number; currentCount: number }
-    >() // 1
-    const lettersToCheck = s1.length
-
+    >()
     // 2
     for (let letter of s1) {
         mapFirstWord.set(letter, {
@@ -31,31 +37,30 @@ function checkInclusion(s1: string, s2: string): boolean {
         })
     }
 
+    const lettersToCheck = s1.length
     let lettersLeft = lettersToCheck
 
-    let left = 0 // 3
+    // 3
+    let left = 0
     for (let right = left; right < s2.length; right++) {
-        if (
-            mapFirstWord.has(s2[right]) &&
-            mapFirstWord.get(s2[right]).currentCount === 0
-        ) {
+        // 4
+        if (mapFirstWord.has(s2[right])) {
+            // 5
             while (
-                left < s2.length &&
-                mapFirstWord.get(s2[right]).currentCount === 0
+                mapFirstWord.get(s2[right]).currentCount === 0 &&
+                left < s2.length
             ) {
                 if (mapFirstWord.has(s2[left])) {
-                    mapFirstWord.get(s2[left]).currentCount++ // 4
+                    mapFirstWord.get(s2[left]).currentCount++
                     lettersLeft++
                 }
                 left++
             }
+            // 6
             mapFirstWord.get(s2[right]).currentCount--
             lettersLeft--
             if (lettersLeft === 0) return true
-        } else if (mapFirstWord.has(s2[right])) {
-            mapFirstWord.get(s2[right]).currentCount-- // 5
-            lettersLeft--
-            if (lettersLeft === 0) return true
+            // 7
         } else {
             for (let key of mapFirstWord.keys()) {
                 mapFirstWord.set(key, {
@@ -71,5 +76,5 @@ function checkInclusion(s1: string, s2: string): boolean {
         }
     }
 
-    return false // 7
+    return false
 }

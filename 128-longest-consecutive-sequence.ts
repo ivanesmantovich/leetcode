@@ -4,33 +4,39 @@
 
 /*
 Краткий алгоритм:
-Превращаем nums в сет, цикл по числам, если в сете есть num -1, то streak = 0, while set.has(num + streak) streak++
-*/
 
-/*
 Полный алгоритм:
-1. Делаем сет из nums
-2. Инит currentStreak и longestStreak (0)
-3. for of цикл по nums
-4. Отнимаем от текущего числа 1 и смотрим есть ли результат в сете, если нет, то это начало стрика
-5. Начинаем считать стрик с нуля (currentStreak = 0)
-6. While в сете есть текущее число + текущий стрик инкрементируем текущий стрик
-7. Когда while кончился если текущий стрик больше longestStreak, то сохраняем новый longestStreak
+1. Делаем numSet из nums
+2. for num of numSet:
+    3. Идем пока не найдем начало стрика (if numSet.has(num - 1) то continue)
+    4. else (нашли начало стрика):
+        5. currentStreak = 1
+        6. numInStreak = num
+        7. Пока в numSet'е есть numInStreak + 1 инкрементируем numInStreak и currentStreak
+    8. Сравниваем currentStreak и сохраняем новый longestStreak.
+
+Возвращаем longestStreak
 */
 
 function longestConsecutive(nums: number[]): number {
-    const conseqSet = new Set(nums) // 1
-
-    let currentStreak = 0 // 2
     let longestStreak = 0
-    for (const num of nums) {
-        // 4
-        if (!conseqSet.has(num - 1)) {
-            currentStreak = 0 // 5
-            while (conseqSet.has(num + currentStreak)) {
-                currentStreak++ // 6
+    const numSet = new Set(nums) // 1
+
+    for (const num of numSet) {
+        const prevNum = num - 1
+
+        // 3
+        if (numSet.has(prevNum)) continue
+        else {
+            let currentStreak = 1 // 5
+            let numInStreak = num // 6
+
+            while (numSet.has(numInStreak + 1)) {
+                numInStreak++
+                currentStreak++ // 7
             }
-            if (currentStreak > longestStreak) longestStreak = currentStreak // 7
+
+            if (currentStreak > longestStreak) longestStreak = currentStreak // 8
         }
     }
 
