@@ -1,3 +1,7 @@
+// Binary Search (https://leetcode.com/problems/remove-element)
+// Leetcode Solution: https://www.youtube.com/watch?v=Pcd1ii9P9ZI
+// Time: O(log n), Space: O(1)
+
 function search(nums: number[], target: number): number {
     let left = 0,
         right = nums.length - 1

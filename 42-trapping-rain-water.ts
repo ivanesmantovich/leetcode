@@ -9,58 +9,53 @@
 и повторяем алгоритм справа налево до последнего начала
 
 Полный алгоритм:
-1. Инициализируем allWater(0) и currentWater(0) для хранения воды, currentBeginning(height[0]) (начало текущего бассейна)
+1. Инит allWater(0), currentWater(0), startHeight(height[0]) (начало текущего бассейна)
 2. Цикл слева направо
 
-(обработка эдж-кейса)
-Если мы на последней колонне и она меньше, чем текущее начало, то у текущего бассейна нет конца, текущую воду нельзя добавлять
-Нам нужно проверить участок справа от последнего "корректного" бассейна
-Делаем target = currentBeginning, выливаем текущую воду (currentWater = 0), делаем последнюю колонну текущим началом и идем справа налево
-Если column == target, то выливаем currentWater в allWater и возвращаем allWater
-Пока не дошли до target обрабатываем колонны как в шаге 3, 4
-Если дошли до самого начала, то это значит, что весь массив это один большой массив у которого правая сторона больше левой, выливаем в allWater, возвращаем
+        (обработка эдж-кейса)
+        Если мы на последней колонне и она меньше, чем текущее начало, то у текущего бассейна нет конца, текущую воду нельзя добавлять
+        Нам нужно еще раз пройти участок справа от текущего начала в обратную сторону
+        Выливаем текущую воду, делаем endHeight = startHeight, делаем последнюю колонну текущим началом и идем справа налево
+        Если column == endHeight, нашли конец бассейна, возвращаем allWater
+        Пока не дошли до endHeight обрабатываем колонны как в шаге 3, 4
 
-3. Если column < currentBeginning, то мы в бассейне, currentWater += currentBeginning - column
-4. Иначе мы встретили конец бассейна, выливаем currentWater в allWater и делаем текущую колонну новым началом (currentBeginning = column)
+    3. Если column < startHeight, то это вода, currentWater += startHeight - column
+    4. Иначе мы встретили стенку бассейна, выливаем currentWater в allWater и делаем текущую колонну новым началом (startHeight = column)
 */
 
 function trap(height: number[]): number {
     let allWater = 0
     let currentWater = 0
-    let currentBeginning = height[0] // 1
-    for (let i = 0; i < height.length; i++) {
-        const column = height[i]
+    let startHeight = height[0] // 1
 
-        // Edge-case, need to go back to the last currentBeginning
-        if (i === height.length - 1 && column < currentBeginning) {
-            const target = currentBeginning
-            currentWater = 0
-            currentBeginning = column
-            for (let back = i; back > 0; back--) {
-                const column = height[back]
-                if (column === target) {
-                    allWater += currentWater
-                    return allWater
-                }
-                if (column < currentBeginning)
-                    currentWater += currentBeginning - column
-                else {
-                    allWater += currentWater
-                    currentWater = 0
-                    currentBeginning = column
-                }
-            }
-            allWater += currentWater
-            return allWater
-        }
-
-        if (column < currentBeginning)
-            currentWater += currentBeginning - column // 3
+    const handleColumn = (column: number) => {
+        if (column < startHeight) currentWater += startHeight - column
         else {
-            allWater += currentWater // 4
+            allWater += currentWater
             currentWater = 0
-            currentBeginning = column
+            startHeight = column
         }
     }
+
+    for (let i = 0; i < height.length; i++) {
+        let column = height[i]
+        handleColumn(column)
+
+        // Edge-case, need to go back till the last startHeight
+        if (i === height.length - 1 && column < startHeight) {
+            const endHeight = startHeight
+            startHeight = column
+            currentWater = 0
+
+            while (column < endHeight) {
+                column = height[i]
+                handleColumn(column)
+                i--
+            }
+
+            return allWater
+        }
+    }
+
     return allWater
 }
