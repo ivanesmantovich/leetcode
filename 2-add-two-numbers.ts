@@ -27,3 +27,25 @@ function addTwoNumbers(
 
     return beginning.next
 }
+
+// function curriedSum(a) {
+//     return (b) => a + b
+// }
+
+// console.log(function curriedSum(3)(4)) // 7
+
+function findDuplicated(arr: number[]): number[] {
+    const dups: number[] = []
+    const map = new Map()
+
+    arr.forEach((num) => {
+        if (map.has(num) && !dups.includes(num)) dups.push(num)
+        else if (!map.has(num)) map.set(num, null)
+    })
+
+    return dups
+}
+
+let nums = [1, 2, 3, 4, 2, 3, 2] // [2, 3]
+
+console.log(findDuplicated(nums))
